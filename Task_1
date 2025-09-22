@@ -1,0 +1,205 @@
+package Task1;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class BasicCalculator {
+    static Scanner sc = new Scanner(System.in);
+    static ArrayList<String> history = new ArrayList<>();
+    static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+
+    // ANSI color codes
+    static final String RESET = "\u001B[0m";
+    static final String RED = "\u001B[31m";
+    static final String GREEN = "\u001B[32m";
+    static final String YELLOW = "\u001B[33m";
+    static final String BLUE = "\u001B[34m";
+    static final String PURPLE = "\u001B[35m";
+    static final String CYAN = "\u001B[36m";
+
+    public static void main(String[] args) {
+        System.out.println(PURPLE + "==== Welcome to Basic Calculator! ====" + RESET);
+
+        boolean exit = false;
+        while (!exit) {
+            showMenu();
+            int choice = getIntInput("Enter your choice: ");
+            switch (choice) {
+                case 1: performAddition(); break;
+                case 2: performSubtraction(); break;
+                case 3: performMultiplication(); break;
+                case 4: performDivision(); break;
+                case 5: performPower(); break;
+                case 6: performSquareRoot(); break;
+                case 7: performModulus(); break;
+                case 8: showHistory(); break;
+                case 9:
+                    System.out.println(CYAN + "Exiting... Goodbye!" + RESET);
+                    exit = true;
+                    break;
+                default:
+                    System.out.println(RED + "Invalid choice! Try again." + RESET);
+            }
+        }
+    }
+
+    static void showMenu() {
+        System.out.println(BLUE + "\n==== MENU ====" + RESET);
+        System.out.println("1. Addition (2 or 3 numbers)");
+        System.out.println("2. Subtraction (2 numbers)");
+        System.out.println("3. Multiplication (2 or 3 numbers)");
+        System.out.println("4. Division (2 numbers)");
+        System.out.println("5. Power (x^y)");
+        System.out.println("6. Square Root");
+        System.out.println("7. Modulus (%)");
+        System.out.println("8. History of Calculations");
+        System.out.println("9. Exit");
+        System.out.println(BLUE + "===============" + RESET);
+    }
+
+    static int getIntInput(String message) {
+        while (true) {
+            try {
+                System.out.print(YELLOW + message + RESET);
+                return Integer.parseInt(sc.nextLine());
+            } catch (Exception e) {
+                System.out.println(RED + "Invalid input! Enter a valid number." + RESET);
+            }
+        }
+    }
+
+    static double getDoubleInput(String message) {
+        while (true) {
+            try {
+                System.out.print(YELLOW + message + RESET);
+                return Double.parseDouble(sc.nextLine());
+            } catch (Exception e) {
+                System.out.println(RED + "Invalid input! Enter a valid number." + RESET);
+            }
+        }
+    }
+
+    // ===== Operations =====
+    // Addition Overloading
+    static void performAddition() {
+        int numCount = getIntInput("How many numbers to add (2 or 3)? ");
+        double result = 0;
+        if (numCount == 2) {
+            double a = getDoubleInput("Enter first number: ");
+            double b = getDoubleInput("Enter second number: ");
+            result = add(a, b);
+            saveHistory(a + " + " + b + " = " + result);
+        } else if (numCount == 3) {
+            double a = getDoubleInput("Enter first number: ");
+            double b = getDoubleInput("Enter second number: ");
+            double c = getDoubleInput("Enter third number: ");
+            result = add(a, b, c);
+            saveHistory(a + " + " + b + " + " + c + " = " + result);
+        } else {
+            System.out.println(RED + "Invalid choice! Adding 2 numbers by default." + RESET);
+            double a = getDoubleInput("Enter first number: ");
+            double b = getDoubleInput("Enter second number: ");
+            result = add(a, b);
+            saveHistory(a + " + " + b + " = " + result);
+        }
+        System.out.println(GREEN + "Result: " + result + RESET);
+    }
+
+    static double add(double a, double b) { return a + b; }
+    static double add(double a, double b, double c) { return a + b + c; }
+
+    static void performSubtraction() {
+        double a = getDoubleInput("Enter first number: ");
+        double b = getDoubleInput("Enter second number: ");
+        double result = a - b;
+        saveHistory(a + " - " + b + " = " + result);
+        System.out.println(GREEN + "Result: " + result + RESET);
+    }
+
+    static void performMultiplication() {
+        int numCount = getIntInput("How many numbers to multiply (2 or 3)? ");
+        double result = 1;
+        if (numCount == 2) {
+            double a = getDoubleInput("Enter first number: ");
+            double b = getDoubleInput("Enter second number: ");
+            result = multiply(a, b);
+            saveHistory(a + " * " + b + " = " + result);
+        } else if (numCount == 3) {
+            double a = getDoubleInput("Enter first number: ");
+            double b = getDoubleInput("Enter second number: ");
+            double c = getDoubleInput("Enter third number: ");
+            result = multiply(a, b, c);
+            saveHistory(a + " * " + b + " * " + c + " = " + result);
+        } else {
+            System.out.println(RED + "Invalid choice! Multiplying 2 numbers by default." + RESET);
+            double a = getDoubleInput("Enter first number: ");
+            double b = getDoubleInput("Enter second number: ");
+            result = multiply(a, b);
+            saveHistory(a + " * " + b + " = " + result);
+        }
+        System.out.println(GREEN + "Result: " + result + RESET);
+    }
+
+    static double multiply(double a, double b) { return a * b; }
+    static double multiply(double a, double b, double c) { return a * b * c; }
+
+    static void performDivision() {
+        double a = getDoubleInput("Enter numerator: ");
+        double b = getDoubleInput("Enter denominator: ");
+        if (b == 0) {
+            System.out.println(RED + "Cannot divide by zero!" + RESET);
+            saveHistory(a + " / " + b + " = Error");
+        } else {
+            double result = a / b;
+            saveHistory(a + " / " + b + " = " + result);
+            System.out.println(GREEN + "Result: " + result + RESET);
+        }
+    }
+
+    static void performPower() {
+        double base = getDoubleInput("Enter base: ");
+        double exp = getDoubleInput("Enter exponent: ");
+        double result = Math.pow(base, exp);
+        saveHistory(base + " ^ " + exp + " = " + result);
+        System.out.println(GREEN + "Result: " + result + RESET);
+    }
+
+    static void performSquareRoot() {
+        double num = getDoubleInput("Enter number: ");
+        if (num < 0) {
+            System.out.println(RED + "Cannot calculate square root of negative number!" + RESET);
+            saveHistory("√" + num + " = Error");
+        } else {
+            double result = Math.sqrt(num);
+            saveHistory("√" + num + " = " + result);
+            System.out.println(GREEN + "Result: " + result + RESET);
+        }
+    }
+
+    static void performModulus() {
+        double a = getDoubleInput("Enter first number: ");
+        double b = getDoubleInput("Enter second number: ");
+        double result = a % b;
+        saveHistory(a + " % " + b + " = " + result);
+        System.out.println(GREEN + "Result: " + result + RESET);
+    }
+
+    // ===== History =====
+    static void saveHistory(String entry) {
+        String timestamp = dtf.format(LocalDateTime.now());
+        history.add(timestamp + " -> " + entry);
+        if (history.size() > 10) history.remove(0); // keep last 10
+    }
+
+    static void showHistory() {
+        System.out.println(CYAN + "\n==== CALCULATION HISTORY ====" + RESET);
+        if(history.isEmpty()){
+            System.out.println(YELLOW + "No calculations yet." + RESET);
+        } else {
+            for (String record : history) {
+                System.out.println(record);
+            }
+        }
+    }
+}
