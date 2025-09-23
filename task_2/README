@@ -1,0 +1,46 @@
+STUDENT RECORD MANAGEMENT SYSTEM:
+A simple Java-based console application to manage student records efficiently.  
+This project demonstrates basic CRUD operations (Create, Read, Update, Delete) on student data using Object-Oriented Programming principles.
+
+OVERVIEW:
+Managing student records manually can be tedious and error-prone.  
+This application provides an interactive console interface where you can:
+
+- Add new students
+- View all students
+- Update student details
+- Delete student records
+- Search for a student by ID
+
+The program uses a dynamic ArrayList to store student objects, making it easy to manage and update data.
+
+FEATURES:
+
+1. Add Student
+   - Enter a unique ID, name, and marks.
+   - Prevents adding duplicate IDs.
+
+2. View Students
+   - Displays all students in a clean, tabular format.
+
+3. Update Student
+   - Update a student’s name or marks by providing their ID.
+
+4. Delete Student
+   - Remove a student from the record by ID.
+
+5. Search Student
+   - Search for a specific student by their ID.
+
+6. Input Validation
+   - Handles invalid inputs gracefully, preventing crashes.
+
+REQUIREMENTS:
+- Java JDK 8 or higher
+- Any code editor or IDE (Eclipse, IntelliJ, VS Code, etc.)
+
+How to Run:
+1. Clone the repository:
+
+```bash
+git clone https://github.com/your-username/java.git
