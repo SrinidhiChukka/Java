@@ -1,0 +1,169 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.InputMismatchException;
+
+// Student class to hold student details
+class Student {
+    private int id;
+    private String name;
+    private double marks;
+
+    public Student(int id, String name, double marks) {
+        this.id = id;
+        this.name = name;
+        this.marks = marks;
+    }
+
+    // Getters and setters
+    public int getId() { return id; }
+    public String getName() { return name; }
+    public double getMarks() { return marks; }
+
+    public void setName(String name) { this.name = name; }
+    public void setMarks(double marks) { this.marks = marks; }
+
+    // Display student info in a formatted way
+    public void display() {
+        System.out.printf("| %-5d | %-20s | %-7.2f |\n", id, name, marks);
+    }
+}
+
+// Main class handling CRUD operations
+public class StudentRecordSystem {
+    private static final ArrayList<Student> students = new ArrayList<>();
+    private static final Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        boolean running = true;
+
+        while (running) {
+            showMenu();
+            int choice = getIntInput("Choose an option: ");
+
+            switch (choice) {
+                case 1 -> addStudent();
+                case 2 -> viewStudents();
+                case 3 -> updateStudent();
+                case 4 -> deleteStudent();
+                case 5 -> searchStudent();
+                case 6 -> {
+                    System.out.println("Exiting... Thank you!");
+                    running = false;
+                }
+                default -> System.out.println("Invalid choice! Please try again.");
+            }
+        }
+    }
+
+    // Menu
+    private static void showMenu() {
+        System.out.println("\n=== Student Record Management ===");
+        System.out.println("1. Add Student");
+        System.out.println("2. View Students");
+        System.out.println("3. Update Student");
+        System.out.println("4. Delete Student");
+        System.out.println("5. Search Student by ID");
+        System.out.println("6. Exit");
+    }
+
+    // Add student
+    private static void addStudent() {
+        int id = getIntInput("Enter Student ID: ");
+        if (getStudentById(id) != null) {
+            System.out.println("Error: Student ID already exists!");
+            return;
+        }
+        System.out.print("Enter Name: ");
+        String name = sc.nextLine();
+        double marks = getDoubleInput("Enter Marks: ");
+        students.add(new Student(id, name, marks));
+        System.out.println("Student added successfully!");
+    }
+
+    // View all students
+    private static void viewStudents() {
+        if (students.isEmpty()) {
+            System.out.println("No students found.");
+            return;
+        }
+        System.out.println("\n| ID    | Name                 | Marks   |");
+        System.out.println("-------------------------------------------");
+        for (Student s : students) s.display();
+    }
+
+    // Update student
+    private static void updateStudent() {
+        int id = getIntInput("Enter Student ID to update: ");
+        Student s = getStudentById(id);
+        if (s == null) {
+            System.out.println("Student not found!");
+            return;
+        }
+        System.out.print("Enter new name: ");
+        s.setName(sc.nextLine());
+        s.setMarks(getDoubleInput("Enter new marks: "));
+        System.out.println("Student updated successfully!");
+    }
+
+    // Delete student
+    private static void deleteStudent() {
+        int id = getIntInput("Enter Student ID to delete: ");
+        Student s = getStudentById(id);
+        if (s == null) {
+            System.out.println("Student not found!");
+            return;
+        }
+        students.remove(s);
+        System.out.println("Student deleted successfully!");
+    }
+
+    // Search student
+    private static void searchStudent() {
+        int id = getIntInput("Enter Student ID to search: ");
+        Student s = getStudentById(id);
+        if (s == null) {
+            System.out.println("Student not found!");
+            return;
+        }
+        System.out.println("\n| ID    | Name                 | Marks   |");
+        System.out.println("-------------------------------------------");
+        s.display();
+    }
+
+    // Helper: get student by ID
+    private static Student getStudentById(int id) {
+        for (Student s : students) {
+            if (s.getId() == id) return s;
+        }
+        return null;
+    }
+
+    // Input validation helpers
+    private static int getIntInput(String message) {
+        while (true) {
+            try {
+                System.out.print(message);
+                return sc.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input! Please enter a number.");
+                sc.next(); // clear invalid input
+            } finally {
+                sc.nextLine(); // consume newline
+            }
+        }
+    }
+
+    private static double getDoubleInput(String message) {
+        while (true) {
+            try {
+                System.out.print(message);
+                return sc.nextDouble();
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input! Please enter a number.");
+                sc.next(); // clear invalid input
+            } finally {
+                sc.nextLine(); // consume newline
+            }
+        }
+    }
+}
