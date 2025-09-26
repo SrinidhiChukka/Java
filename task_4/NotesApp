@@ -1,0 +1,161 @@
+import java.io.*;
+import java.util.*;
+
+public class NotesApp {
+    private static final String FILE_NAME = "notes.txt";
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int choice;
+        
+        while (true) {
+            System.out.println("\n==== NOTES APP ====");
+            System.out.println("1. Add Note");
+            System.out.println("2. View All Notes");
+            System.out.println("3. Search Notes");
+            System.out.println("4. Delete a Particular Note");
+            System.out.println("5. Delete All Notes");
+            System.out.println("6. Exit");
+            System.out.print("Enter your choice: ");
+            
+            choice = sc.nextInt();
+            sc.nextLine(); // consume newline
+            
+            switch (choice) {
+                case 1 -> addNote(sc);
+                case 2 -> viewNotes();
+                case 3 -> searchNotes(sc);
+                case 4 -> deleteSpecificNote(sc);
+                case 5 -> deleteAllNotes();
+                case 6 -> {
+                    System.out.println("Exiting... Goodbye!");
+                    sc.close();
+                    return;
+                }
+                default -> System.out.println("Invalid choice! Try again.");
+            }
+        }
+    }
+
+    // Add note with timestamp
+    private static void addNote(Scanner sc) {
+        try (FileWriter fw = new FileWriter(FILE_NAME, true)) {
+            System.out.print("Enter your note: ");
+            String note = sc.nextLine();
+            
+            String timeStamp = new Date().toString();
+            fw.write("[" + timeStamp + "] " + note + "\n");
+            System.out.println("✅ Note added successfully!");
+        } catch (IOException e) {
+            System.out.println("⚠️ Error writing note: " + e.getMessage());
+        }
+    }
+
+    // View all notes
+    private static void viewNotes() {
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            System.out.println("\n--- All Notes ---");
+            boolean empty = true;
+            int index = 1;
+            while ((line = br.readLine()) != null) {
+                System.out.println(index + ". " + line);
+                index++;
+                empty = false;
+            }
+            if (empty) {
+                System.out.println("📭 No notes found.");
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("📭 No notes yet. Start adding some!");
+        } catch (IOException e) {
+            System.out.println("⚠️ Error reading notes: " + e.getMessage());
+        }
+    }
+
+    // Search notes by keyword
+    private static void searchNotes(Scanner sc) {
+        System.out.print("Enter keyword to search: ");
+        String keyword = sc.nextLine().toLowerCase();
+        boolean found = false;
+        
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            System.out.println("\n--- Search Results ---");
+            while ((line = br.readLine()) != null) {
+                if (line.toLowerCase().contains(keyword)) {
+                    System.out.println(line);
+                    found = true;
+                }
+            }
+            if (!found) {
+                System.out.println("🔍 No notes found with keyword: " + keyword);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("📭 No notes available to search.");
+        } catch (IOException e) {
+            System.out.println("⚠️ Error searching notes: " + e.getMessage());
+        }
+    }
+
+    // Delete a particular note
+    private static void deleteSpecificNote(Scanner sc) {
+        List<String> notes = new ArrayList<>();
+        
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                notes.add(line);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("📭 No notes available to delete.");
+            return;
+        } catch (IOException e) {
+            System.out.println("⚠️ Error reading notes: " + e.getMessage());
+            return;
+        }
+
+        if (notes.isEmpty()) {
+            System.out.println("📭 No notes to delete.");
+            return;
+        }
+
+        // Show notes with indexes
+        System.out.println("\n--- Select a Note to Delete ---");
+        for (int i = 0; i < notes.size(); i++) {
+            System.out.println((i + 1) + ". " + notes.get(i));
+        }
+
+        System.out.print("Enter note number to delete: ");
+        int noteIndex = sc.nextInt();
+        sc.nextLine(); // consume newline
+
+        if (noteIndex < 1 || noteIndex > notes.size()) {
+            System.out.println("❌ Invalid note number.");
+            return;
+        }
+
+        // Remove selected note
+        String removedNote = notes.remove(noteIndex - 1);
+
+        // Rewrite file with remaining notes
+        try (FileWriter fw = new FileWriter(FILE_NAME, false)) {
+            for (String note : notes) {
+                fw.write(note + "\n");
+            }
+            System.out.println("🗑️ Deleted: " + removedNote);
+        } catch (IOException e) {
+            System.out.println("⚠️ Error updating notes: " + e.getMessage());
+        }
+    }
+
+    // Delete all notes (clear file)
+    private static void deleteAllNotes() {
+        try (FileWriter fw = new FileWriter(FILE_NAME, false)) {
+            fw.write(""); // overwrite with empty
+            System.out.println("🗑️ All notes deleted successfully!");
+        } catch (IOException e) {
+            System.out.println("⚠️ Error deleting notes: " + e.getMessage());
+        }
+    }
+}
