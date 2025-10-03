@@ -1,0 +1,28 @@
+ADAPTIVE ONLINE QUIZ APP:
+
+Project Overview:
+The Adaptive Online Quiz App is a console-based Java application designed to provide an engaging and interactive quiz experience.
+Unlike traditional quizzes, this app adjusts the difficulty level of questions based on the user’s performance.
+Correct answers lead to harder questions.
+Incorrect answers lead to easier questions.
+This project demonstrates core Java concepts, object-oriented programming (OOP), control flow, and logical problem-solving, making it a strong addition to any portfolio for recruiters.
+
+Key Features:
+Adaptive Difficulty: Questions automatically become easier or harder depending on the user’s answers.
+Score Tracking: Users earn points for correct answers, and a final score is displayed at the end.
+Performance Summary: A clear summary showing the user’s total score and progress.
+Topic-Based Questions (Optional): Can be extended to include multiple topics like Java, Math, or General Knowledge.
+Interactive Console: Menu-driven input for an easy and intuitive experience.
+
+Technologies Used:
+Java – Core programming language
+Object-Oriented Programming (OOP) – Classes, objects, encapsulation
+Collections – List for storing quiz questions and options
+Control Flow – if-else statements and loops for quiz logic
+Console I/O – Scanner for user input
+
+Future Enhancements:
+Include multiple topics and let the user choose one.
+Add time tracking for each question.
+Implement a leaderboard to save and display high scores.
+Build a GUI interface using Java Swing or JavaFX for better user experience.
